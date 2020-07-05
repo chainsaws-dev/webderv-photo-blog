@@ -26,8 +26,10 @@ func main() {
 	http.Handle("/public/", http.StripPrefix("/public", http.FileServer(http.Dir("./public"))))
 
 	if checkExists("cert.pem") && checkExists("key.pem") {
+		fmt.Println("SSL web server up")
 		http.ListenAndServeTLS(":10443", "cert.pem", "key.pem", nil)
 	} else {
+		fmt.Println("Plain web server up")
 		http.ListenAndServe(":8080", nil)
 	}
 
