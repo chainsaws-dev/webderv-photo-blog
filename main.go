@@ -37,9 +37,9 @@ func checkExists(filename string) bool {
 
 	if _, err := os.Stat(filename); err == nil {
 		return true
-	} else {
-		return false
 	}
+
+	return false
 }
 
 func index(w http.ResponseWriter, req *http.Request) {
