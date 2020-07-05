@@ -24,7 +24,22 @@ func main() {
 	http.HandleFunc("/", index)
 	http.Handle("/favicon.ico", http.NotFoundHandler())
 	http.Handle("/public/", http.StripPrefix("/public", http.FileServer(http.Dir("./public"))))
-	http.ListenAndServe(":8080", nil)
+
+	if checkExists("cert.pem") && checkExists("key.pem") {
+		http.ListenAndServeTLS(":10443", "cert.pem", "key.pem", nil)
+	} else {
+		http.ListenAndServe(":8080", nil)
+	}
+
+}
+
+func checkExists(filename string) bool {
+
+	if _, err := os.Stat(filename); err == nil {
+		return true
+	} else {
+		return false
+	}
 }
 
 func index(w http.ResponseWriter, req *http.Request) {
